@@ -1,17 +1,55 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './SearchBar.css'
 
-const sortByOptions = {
-    'Best Match': 'recommended',
-    'Highest Rated': 'rating',
-    'Most Reviewed': 'review_count'
-}
+function SearchBar({ searchYelp }) {
+    const [state, setState] = useState({ term: '', location: '', sortBy: 'best_match' })
 
-function SearchBar() {
+    const sortByOptions = {
+        'Best Match': 'best_match',
+        'Highest Rated': 'rating',
+        'Most Reviewed': 'review_count'
+    }
+
+    const getSortByClass = (sortByOption) => {
+        if (state.sortBy === sortByOption) {
+            return 'active';
+        } else {
+            return '';
+        }
+    }
+
     const renderSortByOptions = () => {
         return Object.keys(sortByOptions).map(sortByOption => {
-            return <li key={sortByOptions[sortByOption]}>{sortByOption}</li>
-        })
+            let sortByOptionValue = sortByOptions[sortByOption];
+            return (
+                <li
+                    className={getSortByClass(sortByOptionValue)}
+                    key={sortByOptionValue}
+                    onClick={() => handleSortByChange(sortByOptionValue)}
+                >
+                    {sortByOption}
+                </li>
+            );
+        });
+    }
+
+    const handleSortByChange = (sortByOption) => {
+        setState({ ...state, sortBy: sortByOption });
+    }
+
+    const handleTermChange = (event) => {
+        setState({ ...state, term: event.target.value });
+    }
+
+    const handleLocationChange = (event) => {
+        setState({ ...state, location: event.target.value });
+    }
+
+    const handleSearch = (event) => {
+
+        searchYelp(state.term, state.location, state.sortBy);
+
+        event.preventDefault();
     }
 
     return (
@@ -22,14 +60,20 @@ function SearchBar() {
                 </ul>
             </div>
             <div className="SearchBar-fields">
-                <input placeholder="Search Businesses" />
-                <input placeholder="Where?" />
+                <input
+                    placeholder="Search Businesses"
+                    onChange={handleTermChange}
+                />
+                <input
+                    placeholder="Where?"
+                    onChange={handleLocationChange}
+                />
             </div>
-            <div className="SearchBar-submit">
+            <div className="SearchBar-submit" onClick={handleSearch}>
                 <a>Let's Go</a>
             </div>
         </div>
     )
 }
 
-export default SearchBar
+export default SearchBar;
