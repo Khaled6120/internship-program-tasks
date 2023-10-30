@@ -1,9 +1,11 @@
 import './App.css';
+import Yelp from '../../utils/Yelp.js';
 
 import BusinessList from '../BusinessList/BusinessList'
 import SearchBar from '../SearchBar/SearchBar';
+import { useState } from 'react';
 
-const business = {
+/*const business = {
   imageSrc: 'https://s3.amazonaws.com/codecademy-content/programs/react/ravenous/pizza.jpg',
   name: 'MarginOtto Pizzeria',
   address: '1010 Paddington Way',
@@ -14,8 +16,8 @@ const business = {
   rating: 4.5,
   reviewCount: 90
 }
-
-const businesses = [
+*/
+/*const businesses = [
   business,
   business,
   business,
@@ -23,16 +25,25 @@ const businesses = [
   business,
   business
 ]
+*/
 
 function App() {
+  const [searchData, setsearchData] = useState([]);
+
+
   const searchYelp = (term, location, sortBy) => {
-    console.log(`Searching Yelp with ${term}, ${location}, ${sortBy}`);
+    Yelp.search(term, location, sortBy).then(
+      (data) => {
+        setsearchData(data);
+      }
+    )
   }
 
   return (
     <div className="App">
-      <BusinessList businesses={businesses} />
       <SearchBar searchYelp={searchYelp} />
+      <BusinessList businesses={searchData} />
+
     </div>
   );
 }
