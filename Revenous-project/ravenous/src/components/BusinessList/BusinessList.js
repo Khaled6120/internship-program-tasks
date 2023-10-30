@@ -3,9 +3,12 @@ import './BusinessList.css'
 
 import Business from '../Business/Business'
 
-function BusinessList() {
+function BusinessList({ businesses }) {
     return (
-        <Business />
+        <div>
+            {businesses.map(business => { return <Business business={business} key={business.id} /> })}
+
+        </div>
     )
 }
 

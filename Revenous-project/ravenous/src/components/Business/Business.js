@@ -1,9 +1,9 @@
 import React from 'react'
 import './Business.css'
 
-function Business() {
+function Business({ business }) {
     return (
-        <div>Business</div>
+        <div>{/*business.imageSrc*/}</div>
     )
 }
 
